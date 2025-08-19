@@ -1,0 +1,188 @@
+/* src/pages/LoginPage.css */
+
+/* Container utama halaman */
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Warna latar belakang abu-abu muda */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #333;
+}
+
+/* Header */
+.login-header {
+  padding: 20px 40px; /* Padding atas-bawah dan kiri-kanan */
+}
+
+.login-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+/* Konten utama yang berisi kartu login */
+.login-main {
+  flex-grow: 1; /* Mengisi sisa ruang vertikal */
+  display: flex;
+  justify-content: center; /* Pusatkan kartu secara horizontal */
+  align-items: center; /* Pusatkan kartu secara vertikal */
+  padding: 20px;
+}
+
+/* Kartu login */
+.login-card {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Bayangan yang lebih lembut */
+  width: 100%;
+  max-width: 420px; /* Lebar maksimum kartu */
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.login-card .login-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #3498db; /* Warna border saat input aktif */
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.forgot-password {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #3498db;
+  text-decoration: none;
+  text-align: right;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Tombol Login */
+.login-button {
+  background-color: #3498db;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  background-color: #2980b9; /* Warna saat hover */
+}
+
+/* Teks untuk Sign Up */
+.login-signup-text {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.login-signup-text a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.login-footer {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.login-footer .footer-links a {
+  color: #777;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.login-footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+.login-footer .social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.login-footer .social-icons a {
+  color: #777;
+  transition: color 0.2s;
+}
+
+.login-footer .social-icons a:hover {
+  color: #333;
+}
+
+/* Aturan untuk layar kecil (responsif) */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 30px;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+  .login-footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

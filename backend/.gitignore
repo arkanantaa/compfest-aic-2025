@@ -1,0 +1,39 @@
+# Logs
+# Berkas log yang berisi catatan error atau proses development
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+# Folder ini berisi ribuan modul dan tidak perlu disimpan di Git
+# Cukup jalankan `npm install` untuk membuatnya kembali
+node_modules
+/node_modules
+
+# Build output
+# Folder hasil kompilasi untuk production, bisa dibuat ulang dengan `npm run build`
+/dist
+/dist-ssr
+
+# File environment variables lokal
+# Berisi kunci API atau konfigurasi rahasia yang spesifik untuk komputer Anda
+.env.local
+.env.*.local
+
+# Editor directories and files
+# File konfigurasi yang dibuat oleh editor kode seperti VS Code atau WebStorm
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
