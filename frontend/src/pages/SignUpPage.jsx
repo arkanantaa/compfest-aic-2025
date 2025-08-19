@@ -13,7 +13,7 @@ function SignUpPage() {
   return (
     <div className="signup-page-container">
       <div className="signup-card">
-        <h2>Join AirQuality Map to explore air quality data in your area.</h2>
+        <h2>Join EcoEcho to explore air quality data in your area.</h2>
 
         {/* Tombol Sign Up dengan Media Sosial */}
         <div className="social-signup-buttons">
