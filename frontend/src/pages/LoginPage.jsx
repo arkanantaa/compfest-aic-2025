@@ -3,6 +3,22 @@
 import React from 'react';
 import './LoginPage.css'; // Pastikan file CSS ini ada di folder yang sama
 import { Link } from 'react-router-dom'; // Menggunakan Link untuk navigasi
+import { auth } from '../config/firebase'; // Impor konfigurasi Firebase jika diperlukan
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+const navigate = useNavigate();
+const handleLogin = async (event) => {
+  event.preventDefault();
+
+  const {email, password} = event.target.elements;
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    navigate('/')
+  } catch (error) {
+    console.error('Error signing in:', error);
+  }
+}
 
 function LoginPage() {
   return (
@@ -23,7 +39,7 @@ function LoginPage() {
           </p>
 
           {/* Form untuk input email dan password */}
-          <form className="login-form">
+          <form className="login-form" onSubmit={handleLogin}>
             <div className="input-group">
               <label htmlFor="email">Email</label>
               <input type="email" id="email" placeholder="you@example.com" />

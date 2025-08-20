@@ -4,11 +4,14 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom'; // <-- Impor ini
+import { AuthProvider } from './context/AuthContext.jsx'; // <-- Impor AuthProvider
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter> {/* <-- Tambahkan ini */}
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </BrowserRouter> {/* <-- Tambahkan ini */}
   </React.StrictMode>,
 );

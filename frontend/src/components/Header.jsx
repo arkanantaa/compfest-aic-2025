@@ -1,6 +1,9 @@
 // src/components/Header.jsx
 import React from 'react';
 import { Link } from 'react-router-dom'; // <-- Impor Link
+import { useAuth } from '../context/AuthContext';
+import { auth } from '../config/firebase';
+import { signOut } from 'firebase/auth';
 
 const AccountIcon = () => (
   // ... kode SVG Anda tetap sama ...
@@ -22,6 +25,11 @@ const AccountIcon = () => (
 );
 
 function Header() {
+  const { user } = useAuth();
+
+  const handleLogout = async () => {
+    signOut(auth);
+  };
   return (
     <header className="app-header">
       <div className="logo">
@@ -34,10 +42,16 @@ function Header() {
         <a href="#faq">FAQ</a>
       </nav>
       <div className="account-section">
-        {/* Bungkus ikon dengan Link yang mengarah ke /login */}
-        <Link to="/login">
-          <AccountIcon />
-        </Link>
+        {user ? (
+          <>
+            <img src={user.photoUrl || 'default-avatar.png'} alt="User" />
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <Link to="/login">
+            <AccountIcon />
+          </Link>
+        )}
       </div>
     </header>
   );
