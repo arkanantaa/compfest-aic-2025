@@ -1,0 +1,110 @@
+/* src/pages/ProposalsPage.css */
+
+.proposals-page-container {
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.proposals-main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 5%;
+}
+
+.parks-section {
+  margin-bottom: 50px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.section-title svg {
+  color: #3498db;
+}
+
+.parks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.park-card {
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.park-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.rank-badge {
+  background-color: #eaf3fb;
+  color: #3498db;
+  font-weight: bold;
+  font-size: 0.8rem;
+  padding: 5px 8px;
+  border-radius: 50px;
+}
+
+.card-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.card-air-quality {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.card-air-quality strong {
+  color: #333;
+}
+
+.card-air-quality span {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Warna badge kualitas udara */
+.aq-good {
+  background-color: #e6f4ea;
+  color: #34a853;
+}
+.aq-moderate {
+  background-color: #fef1e1;
+  color: #fbbc05;
+}
+.aq-excellent {
+  background-color: #e3f2fd;
+  color: #1a73e8;
+}
