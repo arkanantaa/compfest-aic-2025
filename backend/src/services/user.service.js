@@ -26,6 +26,21 @@ class UserService {
     });
   }
 
+  // Create from Firebase Admin user record (register flow)
+  async createFromAdminRecord(userRecord) {
+  const { uid, email, displayName, photoURL, phoneNumber } = userRecord;
+    return await prisma.user.create({
+      data: {
+        firebaseUid: uid,
+        email: email || null,
+        displayName: displayName || null,
+    username: userRecord.customClaims?.username || null,
+    phone: phoneNumber || null,
+        photoUrl: photoURL || null,
+      },
+    });
+  }
+
   async getOrCreateUser(decodedToken) {
     let user = await this.getByFirebaseUid(decodedToken.uid);
     
