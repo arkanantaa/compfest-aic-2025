@@ -1,7 +1,6 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
-import MapSection from '../components/MapSection';
-import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
 function MainLayout() {
@@ -9,8 +8,7 @@ function MainLayout() {
     <div className="app-container">
       <Header />
       <main className="main-content">
-        <MapSection />
-        <Sidebar />
+        <Outlet />
       </main>
       <Footer />
     </div>

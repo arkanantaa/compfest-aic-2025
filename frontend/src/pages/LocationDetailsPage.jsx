@@ -1,15 +1,21 @@
 // frontend/src/pages/LocationDetailsPage.jsx
 
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import './LocationDetailsPage.css';
+import Footer from '../components/Footer';
+import { api } from '../../services/api';
 
 // --- Komponen-komponen ---
 
 // Komponen untuk Bintang Rating (Display)
-const StarRating = ({ rating }) => {
-  // ... (tetap sama seperti sebelumnya)
+const StarRating = ({ rating = 0 }) => {
+  return (
+    <div className="star-rating-display" aria-label={`Rating ${rating} of 5`}>
+      {[...Array(5)].map((_, i) => (
+        <span key={i} className={i < rating ? 'star-filled' : 'star-empty'}>★</span>
+      ))}
+    </div>
+  );
 };
 
 // Komponen untuk Input Bintang Rating (Formulir)
@@ -51,16 +57,16 @@ function LocationDetailsPage() {
 
   // Efek untuk mengambil data ulasan dari API saat komponen dimuat
   useEffect(() => {
-    const fetchReviews = async () => {
+    let cancelled = false;
+    (async () => {
       try {
-        const response = await fetch(`/api/reviews/${locationId}`);
-        const data = await response.json();
-        setReviews(data.data);
-      } catch (error) {
-        console.error("Gagal mengambil ulasan:", error);
+        const { data } = await api.get(`/reviews/${locationId}`);
+        if (!cancelled) setReviews(Array.isArray(data?.data) ? data.data : []);
+      } catch (err) {
+        if (!cancelled) console.error('Failed to load reviews', err);
       }
-    };
-    fetchReviews();
+    })();
+    return () => { cancelled = true; };
   }, [locationId]);
 
   // Fungsi untuk menangani pengiriman ulasan baru
@@ -72,29 +78,17 @@ function LocationDetailsPage() {
     }
 
     try {
-      const response = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${userToken}` // <-- Kirim token autentikasi
-        },
-        body: JSON.stringify({
-          locationId,
-          rating: newReviewRating,
-          text: newReviewText,
-        }),
+      const { data } = await api.post('/reviews', {
+        locationId,
+        rating: newReviewRating,
+        text: newReviewText,
       });
-
-      if (!response.ok) throw new Error('Gagal mengirim ulasan');
-
-      const newReview = await response.json();
-      setReviews([newReview.data, ...reviews]); // Tambahkan ulasan baru di awal daftar
+      setReviews([data?.data, ...reviews]);
       setNewReviewText('');
       setNewReviewRating(0);
-
     } catch (error) {
-      console.error("Error:", error);
-      alert(error.message);
+      console.error('Error:', error);
+      alert(error.message || 'Failed to submit review');
     }
   };
 
@@ -103,28 +97,18 @@ function LocationDetailsPage() {
     if (!window.confirm("Apakah Anda yakin ingin menghapus ulasan ini?")) return;
 
     try {
-      const response = await fetch(`/api/reviews/${reviewId}`, {
-        method: 'DELETE',
-        headers: {
-          // 'Authorization': `Bearer ${userToken}` // <-- Kirim token autentikasi
-        },
-      });
-
-      if (!response.ok) throw new Error('Gagal menghapus ulasan');
-
-      // Hapus ulasan dari state
-      setReviews(reviews.filter(review => review.id !== reviewId));
-
+      await api.delete(`/reviews/${reviewId}`);
+      setReviews(reviews.filter(r => r.id !== reviewId));
     } catch (error) {
-      console.error("Error:", error);
-      alert(error.message);
+      console.error('Error:', error);
+      alert(error.message || 'Failed to delete review');
     }
   };
 
 
   return (
     <div className="location-details-container">
-      <Header />
+      
       <main className="location-main-content">
         <div className="content-left">
           {/* ... (bagian gambar dan galeri tetap sama) ... */}
@@ -150,24 +134,24 @@ function LocationDetailsPage() {
               {/* ... (bagian rating keseluruhan bisa dibuat dinamis nanti) ... */}
             </div>
             <div className="review-list">
-              {reviews.map((review) => (
-                <div key={review.id} className="review-card">
-                  <div className="review-author">
-                    <div className="author-avatar"></div>
-                    <div className="author-info">
-                      <span className="author-name">{review.user.displayName || 'Anonymous'}</span>
-                      <StarRating rating={review.rating} />
+              {reviews.map((review) => {
+                const rUser = review.user || {};
+                return (
+                  <div key={review.id} className="review-card">
+                    <div className="review-author">
+                      <div className="author-avatar"></div>
+                      <div className="author-info">
+                        <span className="author-name">{rUser.displayName || 'Anonymous'}</span>
+                        <StarRating rating={review.rating} />
+                      </div>
                     </div>
+                    <p className="review-text">{review.text}</p>
+                    {review.userId === currentUserId && (
+                      <button onClick={() => handleDeleteReview(review.id)} className="btn-delete">Delete</button>
+                    )}
                   </div>
-                  <p className="review-text">{review.text}</p>
-                  {/* Tampilkan tombol hapus hanya jika ulasan milik pengguna yang login */}
-                  {review.userId === currentUserId && (
-                    <button onClick={() => handleDeleteReview(review.id)} className="btn-delete">
-                      Delete
-                    </button>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
