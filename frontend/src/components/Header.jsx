@@ -1,12 +1,11 @@
 // src/components/Header.jsx
 import React from 'react';
-import { Link } from 'react-router-dom'; // <-- Impor Link
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../config/firebase';
 import { signOut } from 'firebase/auth';
 
 const AccountIcon = () => (
-  // ... kode SVG Anda tetap sama ...
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="32"
@@ -26,26 +25,39 @@ const AccountIcon = () => (
 
 function Header() {
   const { user } = useAuth();
+  const location = useLocation(); // Mendapatkan informasi rute saat ini
 
   const handleLogout = async () => {
-    signOut(auth);
+    await signOut(auth);
   };
+
+  const isAppPage = location.pathname === '/' || location.pathname.startsWith('/proposals') || location.pathname.startsWith('/home');
+
   return (
     <header className="app-header">
       <div className="logo">
-         {/* Ganti <a> dengan <Link> agar tidak refresh halaman */}
         <Link to="/">✻ logo</Link>
       </div>
       <nav className="navigation">
-        <a href="#map">Map</a>
-        <a href="#about">About</a>
-        <a href="#faq">FAQ</a>
+        {isAppPage ? (
+          <>
+            <Link to="/home">Home</Link>
+            <Link to="/proposals">Proposals</Link>
+            <Link to="/account">Account</Link>
+          </>
+        ) : (
+          <>
+            <a href="#map">Map</a>
+            <a href="#about">About</a>
+            <a href="#faq">FAQ</a>
+          </>
+        )}
       </nav>
       <div className="account-section">
         {user ? (
           <>
-            <img src={user.photoUrl || 'default-avatar.png'} alt="User" />
-            <button onClick={handleLogout}>Logout</button>
+            <img src={user.photoUrl || 'https://placehold.co/40x40/EFEFEF/333?text=A'} alt="User" className="user-avatar" />
+            <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
         ) : (
           <Link to="/login">
