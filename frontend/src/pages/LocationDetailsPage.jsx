@@ -1,13 +1,12 @@
 // frontend/src/pages/LocationDetailsPage.jsx
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LocationDetailsPage.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { api } from '../../services/api';
 import { useAuth } from '../context/AuthContext';
-
-// --- Komponen ---
 
 const StarRating = ({ rating = 0 }) => {
   return (
@@ -42,10 +41,9 @@ const StarRatingInput = ({ rating, setRating }) => {
     );
   };
 
-// --- Halaman Utama ---
-
 function LocationDetailsPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [newReviewText, setNewReviewText] = useState('');
   const [newReviewRating, setNewReviewRating] = useState(0);
@@ -75,13 +73,7 @@ function LocationDetailsPage() {
       alert("Please provide a rating and a review of at least 10 characters.");
       return;
     }
-
-    const newReviewData = {
-      locationId,
-      rating: newReviewRating,
-      text: newReviewText,
-    };
-
+    const newReviewData = { locationId, rating: newReviewRating, text: newReviewText };
     try {
       const { data } = await api.post('/reviews', newReviewData);
       setReviews([data.data, ...reviews]);
@@ -106,6 +98,10 @@ function LocationDetailsPage() {
     }
   };
 
+  const handleViewOnMap = () => {
+    navigate('/map');
+  };
+
   const overallRating = reviews.length > 0 ? (reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length).toFixed(1) : '0.0';
 
   return (
@@ -113,7 +109,7 @@ function LocationDetailsPage() {
       <Header />
       <main className="location-main-content">
         <div className="content-left">
-          {/* Konten kiri seperti gambar utama dan galeri */}
+          {}
         </div>
         <div className="content-right">
           <div className="details-card">
@@ -128,7 +124,8 @@ function LocationDetailsPage() {
               <button className="btn-review" onClick={() => setShowReviewForm(!showReviewForm)}>
                 {showReviewForm ? 'Cancel' : 'Write a Review'}
               </button>
-              <button className="btn-map">View on Map</button>
+              {}
+              <button className="btn-map" onClick={handleViewOnMap}>View on Map</button>
             </div>
             {showReviewForm && (
               <form className="review-form" onSubmit={handleReviewSubmit}>
@@ -146,7 +143,6 @@ function LocationDetailsPage() {
           <div className="reviews-section">
             <div className="reviews-header">
               <h2>Reviews ({reviews.length})</h2>
-              {/* Tampilkan rating keseluruhan hanya jika ada ulasan */}
               {reviews.length > 0 && (
                 <div className="overall-rating">
                   <strong>{overallRating}</strong>
@@ -156,7 +152,6 @@ function LocationDetailsPage() {
               )}
             </div>
             <div className="review-list">
-              {/* Tampilkan pesan jika tidak ada ulasan, jika ada, tampilkan daftar ulasan */}
               {reviews.length === 0 ? (
                 <p>No reviews yet. Be the first to write one!</p>
               ) : (
