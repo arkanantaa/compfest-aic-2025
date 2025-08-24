@@ -1,0 +1,249 @@
+/* frontend/src/components/MapSection.css */
+
+.map-section-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.interactive-map-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* Styling untuk Popup */
+.popup-content {
+  padding: 0.5rem;
+  min-width: 220px;
+}
+
+.popup-title {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.popup-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+.popup-grid span:nth-child(odd) {
+  color: #6b7280;
+}
+.popup-grid span:nth-child(even) {
+  font-weight: 500;
+  text-align: right;
+}
+
+.intervention-popup p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+.intervention-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.intervention-button {
+  width: 100%;
+  padding: 0.5rem;
+  text-align: left;
+  border-radius: 0.5rem;
+  border: 1px solid var(--intervention-color, #d1d5db);
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.intervention-button:hover {
+  background-color: #f9fafb;
+}
+.intervention-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+.intervention-desc {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Kontrol Layer */
+.layer-controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.layer-controls-title {
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.layer-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.layer-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Panel Analisis Dampak */
+.impact-analysis-panel {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+  padding: 1.5rem;
+  z-index: 1000;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.impact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.impact-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.25rem 0;
+}
+.impact-header p {
+  color: #6b7280;
+  margin: 0;
+}
+.impact-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+  .impact-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.impact-item {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+.impact-item div {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.impact-item span {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+.impact-item.aqi { background-color: #ecfdf5; } .impact-item.aqi div { color: #059669; }
+.impact-item.noise { background-color: #eff6ff; } .impact-item.noise div { color: #2563eb; }
+.impact-item.green { background-color: #f0fdf4; } .impact-item.green div { color: #16a34a; }
+.impact-item.walk { background-color: #eef2ff; } .impact-item.walk div { color: #4f46e5; }
+
+.impact-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .impact-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.impact-details { font-size: 0.875rem; color: #4b5563; }
+.impact-details span { font-weight: 500; }
+
+.impact-actions { display: flex; gap: 0.75rem; }
+.impact-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.impact-actions button:hover { background-color: #f9fafb; }
+.btn-create-proposal {
+  background: linear-gradient(to right, #22c55e, #3b82f6);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+}
+.btn-create-proposal:hover {
+  opacity: 0.9;
+}
+
+/* Panel Instruksi */
+.instructions-panel {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  padding: 1rem;
+  z-index: 1000;
+  max-width: 24rem;
+}
+.instructions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.instructions-header h3 {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+.instructions-header svg {
+  color: #16a34a;
+}
+.instructions-panel p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
