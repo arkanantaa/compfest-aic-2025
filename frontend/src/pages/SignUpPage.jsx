@@ -1,8 +1,12 @@
 // src/pages/SignUpPage.jsx
+// Functional signup page: calls backend /api/auth/register then signs in with Firebase
 
-import React from 'react';
-import './SignUpPage.css'; // File CSS yang akan kita buat
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import './SignUpPage.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { api } from '../../services/api';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 // Komponen SVG untuk ikon-ikon
 const FacebookIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5Z"/></svg>;
@@ -10,6 +14,49 @@ const GoogleIcon = () => <svg width="20" height="20" viewBox="0 0 48 48" fill="n
 const AppleIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.33 12.24c0 1.35-.3 2.64-.89 3.83c-.62 1.23-1.54 2.31-2.73 3.22c-1.14.88-2.48 1.33-3.99 1.33c-.6-.01-1.21-.11-1.81-.31c-.6-.2-1.18-.5-1.72-.88c-.55-.39-.98-.86-1.29-1.4c-.31-.54-.47-1.14-.47-1.78c0-.03.01-.09.02-.17a.88.88 0 0 1 .07-.21c.03-.07.08-.14.13-.2c.05-.06.11-.11.18-.15c.07-.04.14-.07.22-.09c.08-.02.16-.03.24-.03c.23 0 .44.06.63.18c.19.12.37.29.53.51c.16.22.33.46.51.72c.18.26.39.52.62.78c.23.26.49.49.78.68c.29.19.6.34.94.45c.34.11.69.17 1.05.17c.53 0 1.04-.16 1.54-.48c.5-.32.92-.77 1.26-1.34c.34-.57.51-1.21.51-1.93c0-.52-.12-1.02-.35-1.48c-.23-.46-.56-.86-.98-1.2c-.42-.34-.92-.6-1.5-.78c-.58-.18-1.22-.27-1.92-.27c-.73 0-1.43.1-2.09.3c-.66.2-1.28.48-1.85.84c-.57.36-1.05.78-1.44 1.25c-.39.47-.69.97-.89 1.5c-.01.02-.02.04-.02.05c-.01.01-.01.02-.02.03c-.01.01-.02.02-.03.03c-.01.01-.02.02-.04.02h-.05c-.02 0-.04-.01-.07-.02c-.03-.01-.05-.03-.08-.05c-.03-.02-.05-.05-.07-.08c-.02-.03-.03-.06-.04-.1c-.01-.04-.01-.08-.01-.12c0-.5.13-1 .4-1.49c.27-.49.64-.91 1.1-1.26c.46-.35.99-.62 1.59-.82c.6-.2 1.25-.3 1.95-.3c.5 0 .99.08 1.46.25c.47.17.9.41 1.29.73c.39.32.72.7.97 1.14c.25.44.38.92.38 1.43zM15.4 5.7c.6-.75 1-1.6 1.18-2.55c-.95.1-1.85.44-2.7.99c-.75.48-1.38 1.12-1.88 1.92c-.5.8-.82 1.68-.96 2.63c1.02-.05 1.97-.37 2.85-.96c.88-.59 1.51-1.34 1.51-2.03z"/></svg>;
 
 function SignUpPage() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError(null); setSuccess(null);
+    if (!form.username.trim()) return setError('Username required');
+    if (form.password.length < 6) return setError('Password min 6 chars');
+    if (form.password !== form.confirmPassword) return setError('Passwords do not match');
+    setSubmitting(true);
+    try {
+      // 1. Register via backend
+      await api.post('/auth/register', {
+        email: form.email,
+        password: form.password,
+        displayName: form.username,
+        username: form.username,
+        phone: form.phone || undefined
+      });
+      setSuccess('Registered. Signing you in...');
+      // 2. Sign in through Firebase to obtain ID token
+      await signInWithEmailAndPassword(auth, form.email, form.password);
+      // 3. Redirect to root (ProtectedRoute will fetch profile)
+      navigate('/');
+    } catch (err) {
+      const msg = err.response?.data?.error?.message || err.message || 'Registration failed';
+      setError(msg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="signup-page-container">
       <div className="signup-card">
@@ -31,29 +78,31 @@ function SignUpPage() {
         <div className="divider">OR</div>
 
         {/* Form Pendaftaran Manual */}
-        <form className="signup-form">
+        <form className="signup-form" onSubmit={onSubmit}>
           <div className="input-group">
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" placeholder="Your username" />
+            <input name="username" value={form.username} onChange={onChange} required type="text" id="username" placeholder="Your username" />
           </div>
           <div className="input-group">
             <label htmlFor="email">Email Address</label>
-            <input type="email" id="email" placeholder="you@example.com" />
+            <input name="email" value={form.email} onChange={onChange} required type="email" id="email" placeholder="you@example.com" />
           </div>
           <div className="input-group">
             <label htmlFor="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="+1 (555) 123-4567" />
+            <input name="phone" value={form.phone} onChange={onChange} type="tel" id="phone" placeholder="+1 (555) 123-4567" />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" placeholder="Minimum 8 characters" />
+            <input name="password" value={form.password} onChange={onChange} required minLength={6} type="password" id="password" placeholder="Minimum 6 characters" />
           </div>
           <div className="input-group">
-            <label htmlFor="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" placeholder="Re-enter your password" />
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input name="confirmPassword" value={form.confirmPassword} onChange={onChange} required type="password" id="confirmPassword" placeholder="Re-enter your password" />
           </div>
-          <button type="submit" className="signup-button">
-            Create AirQuality Map Account
+          {error && <div className="error" style={{color:'red', marginBottom:8}}>{error}</div>}
+          {success && <div className="success" style={{color:'green', marginBottom:8}}>{success}</div>}
+          <button disabled={submitting} type="submit" className="signup-button">
+            {submitting ? 'Creating account...' : 'Create AirQuality Map Account'}
           </button>
         </form>
 
