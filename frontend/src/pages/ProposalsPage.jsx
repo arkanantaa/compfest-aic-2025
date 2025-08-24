@@ -1,7 +1,5 @@
 // src/pages/ProposalsPage.jsx
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import './ProposalsPage.css';
 
 // --- Data Contoh ---
@@ -59,7 +57,6 @@ const ParkCard = ({ rank, title, description, airQuality }) => {
 function ProposalsPage() {
   return (
     <div className="proposals-page-container">
-      <Header />
       <main className="proposals-main-content">
         
         {/* Bagian Trending Parks */}
@@ -93,7 +90,6 @@ function ProposalsPage() {
         </section>
 
       </main>
-      <Footer />
     </div>
   );
 }
