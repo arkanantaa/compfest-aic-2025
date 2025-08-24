@@ -1,26 +1,32 @@
 // src/pages/LoginPage.jsx
 
-import React from 'react';
-import './LoginPage.css'; // Pastikan file CSS ini ada di folder yang sama
-import { Link } from 'react-router-dom'; // Menggunakan Link untuk navigasi
-import { auth } from '../config/firebase'; // Impor konfigurasi Firebase jika diperlukan
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import './LoginPage.css';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
-const navigate = useNavigate();
-const handleLogin = async (event) => {
-  event.preventDefault();
-
-  const {email, password} = event.target.elements;
-  try {
-    await signInWithEmailAndPassword(auth, email.value, password.value);
-    navigate('/')
-  } catch (error) {
-    console.error('Error signing in:', error);
-  }
-}
-
 function LoginPage() {
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    const { email, password } = event.target.elements;
+    try {
+  await signInWithEmailAndPassword(auth, email.value, password.value);
+  // Redirect handled by route when user becomes available
+    } catch (err) {
+      console.error('Error signing in:', err);
+      setError(err.message || 'Failed to sign in');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="login-page-container">
       {/* Header Halaman Login */}
@@ -40,21 +46,26 @@ function LoginPage() {
 
           {/* Form untuk input email dan password */}
           <form className="login-form" onSubmit={handleLogin}>
+            {error && (
+              <div className="login-error" role="alert">
+                {error}
+              </div>
+            )}
             <div className="input-group">
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" placeholder="you@example.com" />
+              <input name="email" type="email" id="email" placeholder="you@example.com" required autoComplete="email" />
             </div>
             <div className="input-group">
               <label htmlFor="password">Password</label>
               <div className="password-wrapper">
-                <input type="password" id="password" placeholder="********" />
+                <input name="password" type="password" id="password" placeholder="********" required autoComplete="current-password" />
               </div>
               <Link to="/forgot-password" className="forgot-password">
                 Forgot your password?
               </Link>
             </div>
-            <button type="submit" className="login-button">
-              Log In
+            <button type="submit" className="login-button" disabled={submitting}>
+              {submitting ? 'Logging in...' : 'Log In'}
             </button>
           </form>
 
