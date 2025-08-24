@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LocationDetailsPage.css';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { api } from '../../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -106,7 +104,6 @@ function LocationDetailsPage() {
 
   return (
     <div className="location-details-container">
-      <Header />
       <main className="location-main-content">
         <div className="content-left">
           {}
@@ -175,7 +172,6 @@ function LocationDetailsPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
