@@ -27,17 +27,18 @@ class UserService {
   }
 
   // Create from Firebase Admin user record (register flow)
-  async createFromAdminRecord(userRecord) {
-  const { uid, email, displayName, photoURL, phoneNumber } = userRecord;
+  async createFromAdminRecord(userRecord, extras = {}) {
+    const { uid, email, displayName, photoURL, phoneNumber } = userRecord;
+    const { username = null, phone = null } = extras;
     return await prisma.user.create({
       data: {
         firebaseUid: uid,
         email: email || null,
         displayName: displayName || null,
-    username: userRecord.customClaims?.username || null,
-    phone: phoneNumber || null,
+        username: username || userRecord.customClaims?.username || null,
+        phone: phone || phoneNumber || null,
         photoUrl: photoURL || null,
-      },
+      }
     });
   }
 
