@@ -40,12 +40,11 @@ a {
 .main-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   padding: 24px;
-  /* max-width: 1400px; */ /* Baris ini sudah tidak aktif */
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto; 
 }
 
 /* Header */
