@@ -1,5 +1,21 @@
 /* Latar belakang dan font dasar untuk halaman */
 .location-details-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.location-main-content {
+  flex: 1; 
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  gap: 30px;
+  padding: 30px 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.location-details-container {
   background-color: #f8f9fa;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #333;
@@ -15,17 +31,16 @@
 }
 
 .content-left {
-  flex: 6; /* Mengambil 60% lebar */
+  flex: 7;
 }
 
 .content-right {
-  flex: 4; /* Mengambil 40% lebar */
+  flex: 3;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Gambar Utama */
 .main-image {
   width: 100%;
   border-radius: 12px;
@@ -33,7 +48,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Galeri Gambar */
 .pictures-gallery h3 {
   font-size: 1.5rem;
   margin-bottom: 15px;
@@ -58,7 +72,6 @@
   transform: scale(1.05);
 }
 
-/* Kartu Detail Lokasi */
 .details-card, .reviews-section {
   background-color: #fff;
   padding: 25px;
@@ -96,7 +109,6 @@
   color: #666;
 }
 
-/* Tombol Aksi */
 .action-buttons {
   display: flex;
   gap: 15px;
@@ -124,7 +136,6 @@
   background-color: #f1f1f1;
 }
 
-/* Bagian Ulasan */
 .reviews-header {
   display: flex;
   justify-content: space-between;
@@ -180,7 +191,6 @@
   line-height: 1.6;
 }
 
-/* Rating Bintang */
 .star-rating {
   font-size: 1.2rem;
 }
@@ -191,7 +201,6 @@
   color: #ccc;
 }
 
-/* Formulir Ulasan */
 .review-form {
   margin-top: 20px;
   border-top: 1px solid #e9ecef;
@@ -212,7 +221,6 @@
   font-family: inherit;
 }
 
-/* Input Bintang Rating */
 .star-rating-input {
   margin-bottom: 10px;
 }
@@ -228,7 +236,6 @@
   transition: color 0.2s;
 }
 
-/* Tombol Hapus */
 .review-card {
   position: relative;
 }
