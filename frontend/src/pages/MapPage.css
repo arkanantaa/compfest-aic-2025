@@ -1,0 +1,16 @@
+.map-page-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.map-page-main {
+  flex: 3; /* Map takes up more space */
+}
+
+.map-page-sidebar {
+  flex: 1; /* Sidebar takes up less space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

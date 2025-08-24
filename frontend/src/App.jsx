@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import LocationDetailsPage from './pages/LocationDetailsPage';
 import ProposalsPage from './pages/ProposalsPage';
+import MapPage from './pages/MapPage';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -16,15 +17,18 @@ function App() {
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignUpPage />} />
 
-      {/* Protected application area */}
-      <Route element={<ProtectedRoute />}> 
-        <Route path="/" element={<MainLayout />}> 
+      <Route element={<MainLayout />}>
+        {/* Public Routes */}
+        <Route path="/map" element={<MapPage />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute redirectTo="/map" />}>
           <Route index element={<LocationDetailsPage />} />
           <Route path="proposals" element={<ProposalsPage />} />
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={user ? '/' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={user ? '/' : '/map'} replace />} />
     </Routes>
   );
 }

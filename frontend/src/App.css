@@ -5,6 +5,16 @@
   box-sizing: border-box;
 }
 
+.location-details-page {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.main-content {
+  flex: 3; 
+}
+
 :root {
   --background-color: #f8f9fa;
   --card-background: #ffffff;
@@ -40,12 +50,11 @@ a {
 .main-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   padding: 24px;
-  /* max-width: 1400px; */ /* Baris ini sudah tidak aktif */
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto; 
 }
 
 /* Header */
@@ -279,9 +288,6 @@ textarea, input[type="text"] {
   .main-content {
     /* Ubah layout grid dari 2 kolom menjadi 1 kolom */
     grid-template-columns: 1fr;
-    
-    /* Kurangi padding agar tidak terlalu makan tempat di layar kecil */
-    padding: 16px;
   }
 
   .map-container {
